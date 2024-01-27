@@ -103,8 +103,9 @@ return (
   <div>
     <div>
     <h2>Blogs</h2>
-    <button onClick={()=> setUser(null)}>Logout</button>
+    <button onClick={()=> {window.localStorage.removeItem('loggedUserObj');setUser(null)}}>Logout</button>
     </div>
+    <div style={{margin:"10px"}}>{blogForm()}</div>
     {blogs.map(blog => (
       <div key={blog._id}>
         <h3>Title : {blog.title}</h3>
