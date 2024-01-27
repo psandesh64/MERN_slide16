@@ -56,9 +56,15 @@ const App = () => {
   const addBlog = async (event) => {
     event.preventDefault()
     try{
-      delete newBlog._id
       const blogCreated = await blogService.createBlog( newBlog )
-      setNewBlog(blogCreated)
+      // delete newBlog._id
+      setNewBlog({
+        title: '',
+        author: '',
+        url:'',
+        likes: 0,
+      })
+    
     } catch (exception) {
       console.log(exception)
     }
