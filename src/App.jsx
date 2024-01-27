@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import loginService from './services/login'
 import blogService from './services/blog'
+import NotificationMsg from './components/notificationmsg'
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
     likes: 0
   })
   const [blogs,setBlogs] =  useState([])
+  const [notification,setNotification] = useState({status:'',css:''})
   
   useEffect(()=>{
     const loggedUserJSON = window.localStorage.getItem('loggedUserObj')
@@ -49,14 +51,22 @@ const App = () => {
       setUser(loggeduser)
       setUsername('')
       setPassword('')
+      setNotification({status:'Login Successful', css:'success'})
+      setTimeout(()=>setNotification(''),2000);
     } catch (exception) {
-      console.log(exception)
+      console.log('login unSuccessfull')
+      setNotification({status:'Incorrect Credentials', css:'error'})
+      setTimeout(()=>setNotification(''),2000);
+      console.log(exception)  
     }
   }
   const addBlog = async (event) => {
     event.preventDefault()
+
     try{
       const blogCreated = await blogService.createBlog( newBlog )
+      setNotification({status:'Created Successfully',css:'success'})
+      setTimeout(()=>setNotification(''),2000);
       // delete newBlog._id
       setNewBlog({
         title: '',
@@ -67,6 +77,8 @@ const App = () => {
     
     } catch (exception) {
       console.log(exception)
+      setNotification({status:'Problem creating new Blog', css:'error'})
+      setTimeout(()=>setNotification(''),2000);
     }
   }
 
@@ -108,6 +120,7 @@ const App = () => {
 return (
   <div>
     <div>
+    <NotificationMsg noti={notification}/>
     <h2>Blogs</h2>
     <button onClick={()=> {window.localStorage.removeItem('loggedUserObj');setUser(null)}}>Logout</button>
     </div>
